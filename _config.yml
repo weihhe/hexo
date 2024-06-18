@@ -102,3 +102,8 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
+
+admin:
+  username: _WEIHHE
+  password_hash: $2a$07$UQcbXcgA19RBeaJr7/lQFeefbuld6WGT7FKkuF3CdNW..dBoGbIQ2
+  secret: m_tyX9A6RC5MKpUMATedistribute&
