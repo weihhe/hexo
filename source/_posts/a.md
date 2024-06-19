@@ -1,6 +1,10 @@
 title: 进程
-date: 2024-06-17 16:48:38
 tags:
+  - process
+categories:
+  - computer basics
+author: weihehe
+date: 2024-06-17 16:48:00
 ---
 ## 目录
 
@@ -43,6 +47,4 @@ tags:
 
 #### 
 
-这里是第二部分的内容。
 
-效果：
