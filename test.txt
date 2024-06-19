@@ -1,2 +1,2 @@
-I changed the name of git.
+I changed the name and email of git.
 
