@@ -440,13 +440,13 @@ footer:
   beian:
     enable: false
     # ICP证号
-    icp_text: 京ICP证123456号
+    icp_text: 滇ICP备2024032896号
     # 公安备案号，不填则只显示ICP
-    police_text: 京公网安备12345678号
+    police_text: 
     # 公安备案的编号，用于URL跳转查询
-    police_code: 12345678
+    police_code: __
     # 公安备案的图片. 为空时不显示备案图片
-    police_icon: /img/police_beian.png
+    police_icon: 
 
 
 #---------------------------
@@ -456,7 +456,7 @@ footer:
 index:
   # 首页 Banner 头图，可以是相对路径或绝对路径，以下相同
   # Path of Banner image, can be a relative path or an absolute path, the same on other pages
-  banner_img: /img/default.png
+  banner_img: /img/mind.jpg
 
   # 头图高度，屏幕百分比
   # Height ratio of banner image
