@@ -1,8 +1,9 @@
 title: 进程
 tags:
-  - process
+  - 进程
 categories:
-  - computer basics
+  - 操作系统
+  - ''
 author: weihehe
 date: 2024-06-17 16:48:00
 ---

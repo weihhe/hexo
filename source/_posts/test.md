@@ -1,12 +1,13 @@
-title: vscode弹出console window
+title: vscode-CPP配置
 tags:
-  - vscode
+  - Vscode
+  - ''
 categories:
-  - environment
+  - Environment
 author: W_HH
 date: 2023-06-17 17:06:00
 ---
-让vscode弹出熟悉的黑框
+让vscode弹出熟悉的黑框，设置输出文件夹等
 <!-- more -->
 
 **以(.C)为例**
