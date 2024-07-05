@@ -2,7 +2,7 @@ title: C++中的默认成员函数，现代写法
 author: weihehe
 tags: []
 categories:
-  - CPP
+  - C++
 date: 2024-07-03 10:48:00
 ---
 六个默认成员函数
