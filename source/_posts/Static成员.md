@@ -1,4 +1,4 @@
-title: Static成员，全局变量
+title: Static成员 全局变量
 author: weihehe
 tags:
   - static
