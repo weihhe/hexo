@@ -38,7 +38,7 @@ PCB(Process Control Block)
 ## 进程信息
 
 
-### 使用ps命令实时监测pid
+### 使用ps命令实时监测pid(或者top)
 
 **替换process-name**
 
@@ -107,8 +107,21 @@ fork()的“两个返回值”生产的原因：
 2. 子进程和父进程共享fork之后的代码，其中包含**return语句** ，于是父子进程都分别进行了return操作
 
 ## Linux进程的状态
-
-
+```c
+/ * The task state array is a strange "bitmap" of* reasons to sleep. Thus "running" is zero, and
+ * you can test for combinations of others with
+ * simple bit tests.
+ */
+ static const char * const task_state_array[] = {
+ "R (running)", /* 0 */
+ "S (sleeping)", /* 1 */
+ "D (disk sleep)", /* 2 */
+ "T (stopped)", /* 4 */
+ "t (tracing stop)", /* 8 */
+ "X (dead)", /* 16 */
+ "Z (zombie)", /* 32 */
+ };
+```
 ![upload successful](/images/process_state.png)
 
 
@@ -124,7 +137,7 @@ fork()的“两个返回值”生产的原因：
 
 对于CPU来说，一出一进的过程就叫做**进程的切换**。
 
-### 阻塞
+### 阻塞（`s`）
 
 在**等待特定资源的进程**，我们叫做**阻塞**。——每个都具有等待队列。
  
