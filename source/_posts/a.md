@@ -19,7 +19,7 @@ Linux下进程相关，如PCB，fork()，调度器，写时拷贝
  
  *PCB内存储了**进程地址空间结构的地址***。
 
-![upload successful](/images/pasted-0.png)
+![](/images/pasted-0.png)
 
 
  
@@ -29,13 +29,13 @@ PCB(Process Control Block)
 
 目的是为了方便操作系统去管理数据进程，将对进程的管理，转化为对PCB的管理。
 
- <ins>例如:task_struct是linux内核的一种用于管理进程的数据结构
+ ### task_struct是linux内核的一种用于管理进程的数据结构
 
 ### PCB构成
 
 任何一个程序，在加载到一个内存的时候，都要先 **创建PCB（进程控制块）** 来管理它。**PCB**中记录了许多有关运行进程的重要信息，包括进程的状态，进程运行的内存信息，优先级等等
 
-![upload successful](/images/PCB.png)
+![](/images/PCB.png)
 
 ## 进程信息
 
@@ -62,13 +62,13 @@ done
 
 可以看到此时父进程的pid值不变
 
-![upload successful](/images/ppid_pid.png)
+![](/images/ppid_pid.png)
 
 查询该处的父进程
 
 可以看到bash字段,即 **bash** 进程，即命令行解释进程。几乎所有shell指令都是它的子进程
 
-![upload successful](/images/bash_pid.png)
+![](/images/bash_pid.png)
 
 
 ### 创建一个子进程
@@ -145,7 +145,7 @@ fork()的“两个返回值”生产的原因：
  "Z (zombie)", /* 32 */
  };
 ```
-![upload successful](/images/process_state.png)
+![](/images/process_state.png)
 
 
 如果我们使用类似双链表的结构维护进程，链表中保存的是进程的PCB。则对于cpu而言，管理这些进程就是要**维护进程运行的队列**

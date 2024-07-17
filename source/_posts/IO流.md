@@ -86,7 +86,7 @@ RETURN VALUE
 
 在**进程**想要**访问磁盘文件**的时候，**内核**会生成一个**struct file结构体**，内部会包含文件各种各样的信息。每打开一个文件，就会生成一个。并用了类似双链表的形式将他们联系起来。
 
-一个进程和它打开的文件使用`pcb`和`struct_files（文件描述符表）`联系起来
+一个进程和它打开的文件使用`pcb——task_struct`和`struct_files（文件描述符表）`联系起来
 
 
 ![进程的文件描述符表的运行机制](/images/pasted-17.png)
@@ -118,6 +118,24 @@ RETURN VALUE
 ## 重定向
 
 
-- 原理：将进程的进程描述表中**需要重定向的位置上的地址**内容替换(复制新地址，粘贴到旧地址)为**重定向目标文件的地址**。
+- 原理：将进程的进程描述表中**需要重定向的位置上的地址**内容替换为**重定向目标文件的地址**。
 
 使用系统调用接口` int dup2(int oldfd, int newfd);`
+(复制oldfd对应的地址，粘贴替换到newfd对应的地址上)
+
+### 重定向的符号
+
+| Symbol       | Meaning                        |
+|--------------|---------------------------------|
+| `>`          | Output redirection             |
+| `>>`         | Append output redirection      |
+| `<`          | Input redirection              |
+|&| This indicates that what follows is a file descriptor, not a file name.
+| `<<`         | Here document (input redirection) |
+| `<<<`        | Here string (input redirection)  |
+
+- eg（指令从左往右执行）：`command > output.txt 2>&1`
+其运行时：
+	1. 将`1（stdout）`的内容重定向输出到output.txt中。
+	2. 将stdeer重定向到`1`，即也重定向output.txt中。
+
