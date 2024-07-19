@@ -84,9 +84,9 @@ RETURN VALUE
 
 那这两者的返回值有什么关系呢？
 
-在**进程**想要**访问磁盘文件**的时候，**内核**会生成一个**struct file结构体**，内部会包含文件各种各样的信息。每打开一个文件，就会生成一个。并用了类似双链表的形式将他们联系起来。
+在**进程**想要**访问磁盘文件**的时候，**内核**会生成一个**struct file结构体**，内部会包含文件各种各样的信息(内部也包含了一个 **struct inode**和**address space**，用来存储`inode`和`page`的相关的信息)。并用了双链表的形式将不同**struct file结构体**联系起来。
 
-一个进程和它打开的文件使用`pcb——task_struct`和`struct_files（文件描述符表）`联系起来
+**一个进程和它打开的文件使用`pcb——task_struct`和`struct_files（文件描述符表）`联系起来**
 
 
 ![进程的文件描述符表的运行机制](/images/pasted-17.png)
@@ -138,4 +138,3 @@ RETURN VALUE
 其运行时：
 	1. 将`1（stdout）`的内容重定向输出到output.txt中。
 	2. 将stdeer重定向到`1`，即也重定向output.txt中。
-
