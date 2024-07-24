@@ -12,7 +12,7 @@ date: 2024-07-05 07:59:00
 
 ## 内存结构 
 
-![upload successful](/images/内存管理_kernel.png)
+![内存结构](/images/内存管理_kernel.png)
 
 *图中以32位系统为例，且从下往上地址逐渐变大*
 
