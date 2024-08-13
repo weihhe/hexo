@@ -1,9 +1,8 @@
-title: C++中的类型转换
+title: C++中的类型转换 RTTI
 author: weihehe
 date: 2024-08-10 22:09:39
 tags:
 ---
-
 四种类型转换
 <!--more-->
 
@@ -19,5 +18,11 @@ tags:
 -  dynamic_cast会先检查是否能转换成功，能成功则转换，不能则返回0
 - 向上转型：子类对象指针/引用->父类指针/引用(不需要转换，赋值兼容规则)
 - 向下转型：父类对象指针/引用->子类指针/引用(用dynamic_cast转型是安全的)
-注意：
 
+
+
+# RTTI：Run-time Type identification的简称，即：运行时类型识别。
+- C++通过以下方式来支持RTTI：
+	1. typeid运算符
+	2. dynamic_cast运算符
+	3. decltype
