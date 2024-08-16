@@ -358,4 +358,8 @@ clean:
 	rm -f Udp Udpclient
 
 ```
+### 补充函数
 
+`FILE *popen(const char *command, const char *mode);`
+
+`popen` 函数用于创建一个进程来执行指定的命令，并建立一个管道，以便在父进程和子进程之间进行通信。它可以用来运行外部命令并读取其输出，或者将数据传递给外部命令进行处理。
