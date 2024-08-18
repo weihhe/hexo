@@ -271,6 +271,69 @@ clean:
 	rm -f Udp Udpclient
 
 ```
+### Windowns下的Client实现
+```cpp
+#include <iostream>
+#include <winsock2.h>
+#include <windows.h>
+#include <cstdlib>
+#include <cstdio>
+#include <string>
+#pragma comment(lib, "ws2_32.lib") // 初始化
+#pragma warning( disable : 4996)
+
+int serverport = /*  */;
+std::string serverip = /*"-----"*/;
+
+int main(int argc, char* argv[])
+{
+	std::cout << "hello client" << std::endl;
+
+	WSADATA wsd;
+	if (WSAStartup(MAKEWORD(2, 2), &wsd) != 0) {
+		std::cerr << "WSAStartup failed" << std::endl;
+		return 1;
+	}
+	//创建套接字
+
+	SOCKET sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (sockfd == SOCKET_ERROR)
+	{
+		std::cout << "creat sockfd fail.";
+		return 1;
+	}
+	char buffer[1024];
+
+	sockaddr_in server;
+	std::string message;
+	while (true)
+	{
+		std::cout << "" << std::endl;
+		std::getline(std::cin, message);
+
+		memset(&server, 0, sizeof(server));
+		server.sin_family = AF_INET;
+		server.sin_port = htons(serverport);
+		server.sin_addr.s_addr = inet_addr(serverip.c_str());
+
+		int len = sizeof(server);
+		sendto(sockfd, message.c_str(), message.size(), 0, (sockaddr*)&server, len);
+
+		sockaddr_in temp;
+		len = sizeof(temp);
+		size_t s = recvfrom(sockfd, buffer, sizeof(buffer) - 1, 0, (sockaddr*)&temp, &len);
+
+		if (s > 0)
+		{
+			buffer[s] = '\0';
+			std::cout << "收到的信息：" << buffer << std::endl;
+		}
+	}
+	closesocket(sockfd);
+	WSACleanup();
+	return 0;
+}
+```
 ### 补充函数
 
 `FILE *popen(const char *command, const char *mode);`
