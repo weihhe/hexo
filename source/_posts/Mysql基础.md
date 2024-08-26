@@ -83,7 +83,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';
 	- 为了使更改生效，执行以下命令刷新权限：`	- FLUSH PRIVILEGES;`
 
 7. 继续配置
-- 例如：
+	- 例如：
 ```sql
 [mysqld]
  port=6666
@@ -91,6 +91,43 @@ GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';
  default-storage-engine=innodb
 ```
 
+## 什么叫子句？
+
+在 MySQL 中，"子句"（clause）是 SQL 语句中的一个组成部分，用于指定查询的不同方面或约束条件。每个子句通常有其特定的功能和作用，并且它们可以组合在一起构成一个完整的 SQL 语句。
+
+1. **`SELECT` 子句**：
+  
+  - 用于指定要查询的列。
+  - `SELECT name, age FROM users;`
+2. **`FROM` 子句**：
+  
+  - 指定查询数据来自哪个表。
+  - `SELECT name, age FROM users;`
+3. **`WHERE` 子句**：
+  
+  - 用于设置条件，以筛选满足条件的数据行。
+  - `SELECT name, age FROM users WHERE age > 18;`
+4. **`ORDER BY` 子句**：
+  
+  - 用于指定查询结果的排序方式。
+  - `SELECT name, age FROM users ORDER BY age DESC;`
+5. **`GROUP BY` 子句**：
+  
+  - 用于将结果集按一列或多列进行分组。
+  - `SELECT age, COUNT(*) FROM users GROUP BY age;`
+6. **`HAVING` 子句**：
+  
+  - 类似于 `WHERE` 子句，但用于过滤 `GROUP BY` 子句后的分组数据。
+  - `SELECT age, COUNT(*) FROM users GROUP BY age HAVING COUNT(*) > 1;`
+7. **`LIMIT` 子句**：
+  
+  - 用于限制查询返回的记录数。
+  - `SELECT name, age FROM users LIMIT 10;`
+8. **`JOIN` 子句**：
+  
+  - 用于在查询中连接多个表。
+  - `SELECT users.name, orders.amount FROM users JOIN orders ON`
+  
 ## 数据库语言分类：
 
 1. **DDL（Data Definition Language） - 数据定义语言**：
