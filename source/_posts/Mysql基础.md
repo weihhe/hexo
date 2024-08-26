@@ -180,6 +180,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';
 | **恢复数据库** | `mysql -u user -p dbname < backup.sql`             | 从备份文件中恢复数据库                    |
 - show processlist 查看当前数据库的连接情况。
 
+- source `要运行的sql文件`可以导入sql文件。
 
 ## 本质
 
