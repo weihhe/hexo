@@ -182,9 +182,119 @@ GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';
 
 - source `要运行的sql文件`可以导入sql文件。
 
-## 本质
+## 用户管理
 
-- 建立数据库，本质上是创建一个目录。
+### 1. 创建用户
+
+在 MySQL 中，可以使用 `CREATE USER` 语句创建一个新的数据库用户。一个典型的创建用户的语句如下：
+
+```sql
+CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+```
+
+- `username`: 用户名。
+- `host`: 指定该用户可以从哪个主机连接到 MySQL 服务器，常见的有 `'localhost'`（仅限本地连接）或 `'%'`（允许从任何主机连接）。
+- `password`: 用户密码。
+
+#### 示例：
+
+```sql
+CREATE USER 'bob'@'localhost' IDENTIFIED BY 'password123';
+```
+
+这条语句创建了一个名为 `bob` 的用户，且只允许从本地 `localhost` 连接 MySQL，密码为 `password123`。
+
+### 2. 设置和修改用户密码
+
+可以通过 `SET PASSWORD` 或 `ALTER USER` 来修改用户的密码。
+
+#### 使用 `SET PASSWORD` 修改密码：
+
+```sql
+SET PASSWORD FOR 'username'@'host' = 'new_password';
+```
+
+#### 使用 `ALTER USER` 修改密码：
+
+```sql
+ALTER USER 'username'@'host' IDENTIFIED BY 'new_password';
+```
+
+#### 示例：
+
+```sql
+ALTER USER 'bob'@'localhost' IDENTIFIED BY 'new_password123';
+```
+
+这将把用户 `bob` 的密码更改为 `new_password123`。
+
+### 3. 分配和管理用户权限
+
+MySQL 的权限控制系统是基于 `GRANT` 和 `REVOKE` 语句来分配和撤销用户权限的。
+
+#### 使用 `GRANT` 赋予权限：
+
+```sql
+GRANT privileges ON database.table TO 'username'@'host';
+```
+
+- `privileges`: 需要赋予的权限，比如 `SELECT`, `INSERT`, `UPDATE`, `ALL` 等。
+- `database.table`: 作用范围，可以是某个特定的数据库表、整个数据库，或所有数据库。
+
+#### 示例：
+
+```sql
+GRANT SELECT, INSERT ON mydb.* TO 'bob'@'localhost';
+```
+
+这赋予用户 `bob` 在 `mydb` 数据库中所有表的 `SELECT` 和 `INSERT` 权限。
+
+#### 使用 `REVOKE` 撤销权限：
+
+```sql
+REVOKE privileges ON database.table FROM 'username'@'host';
+```
+
+#### 示例：
+
+```sql
+REVOKE INSERT ON mydb.* FROM 'bob'@'localhost';
+```
+
+这将撤销用户 `bob` 在 `mydb` 数据库中所有表的 `INSERT` 权限。
+
+### 4. 查看用户和权限
+
+可以使用 `SHOW GRANTS` 语句查看某个用户的权限。
+
+#### 查看用户权限：
+
+```sql
+SHOW GRANTS FOR 'username'@'host';
+```
+
+#### 示例：
+
+```sql
+SHOW GRANTS FOR 'bob'@'localhost';
+```
+
+这将显示用户 `bob` 在 `localhost` 的所有权限。
+
+### 5. 删除用户
+
+使用 `DROP USER` 语句可以删除一个用户及其所有权限。
+
+#### 示例：
+
+```sql
+DROP USER 'bob'@'localhost';
+```
+
+这将删除 `bob` 用户，并清除其在 `localhost` 上的所有权限。
+
+## 建立数据库，本质上是创建一个目录。
+
 ![表在磁盘中的存储位置](/images/数据库-文件.png)
 
 - 在数据库内建立表，本质就是在其数据库目录下，创建对应的文件。
