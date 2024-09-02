@@ -1,7 +1,9 @@
 title: Linux指令
 author: weihehe
-date: 2024-08-14 21:48:48
-tags:
+tags: []
+categories:
+  - 易忘
+date: 2024-08-14 21:48:00
 ---
 常见指令整理
 <!--more-->
@@ -26,3 +28,14 @@ tags:
 | `-H`        | 显示进程树。                                                       |
 | `--sort`    | 根据指定的字段排序输出。例如 `--sort=-%mem` 根据内存使用量降序排序。|
 | `--version` | 显示 `ps` 命令的版本信息。                                          |
+
+## xargs
+
+`xargs` 通常用于将标准输入数据转换为命令行参数，然后执行这些命令。
+
+- 例如：`pidof nginx | xargs kill`
+
+## pidof
+
+- 它用于查找正在运行的进程的进程 ID（PID）。通过指定程序的名称，pidof 会返回与该程序关联的所有进程的 PID。
+
