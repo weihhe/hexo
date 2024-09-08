@@ -1,7 +1,10 @@
 title: C++中的类型转换 RTTI
 author: weihehe
-date: 2024-08-10 22:09:39
 tags:
+  - 类型
+categories:
+  - C++
+date: 2024-08-10 22:09:00
 ---
 四种类型转换
 <!--more-->
