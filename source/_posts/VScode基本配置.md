@@ -36,3 +36,21 @@ VScode编辑器(不是编译器)
 6. 设置可调试(`launch.json`文件)，并复用`"program": "${fileDirname}\\${fileBasenameNoExtension}.exe"`从task找到生成可执行文件的名称,并且指定`gdb.exe`所在路径，然后就可以愉快使用了，如果想要弹出黑窗的话，只需要修改  `“externalConsole”` , 为 true即可。
 ![launch.json文件](/images/launch.png)
 
+## 部分变量函数
+
+| 变量名 | 含义  |
+| --- | --- |
+| `${workspaceFolder}` | 当前打开的工作区文件夹的绝对路径。 |
+| `${workspaceFolderBasename}` | 当前打开的工作区文件夹的基本名称，不包含路径。 |
+| `${file}` | 当前打开文件的绝对路径文件名。 |
+| `${relativeFile}` | 当前打开文件相对于工作区文件夹的相对路径名。 |
+| `${fileBasename}` | 当前打开文件的基本名称，包含文件扩展名。 |
+| `${fileBasenameNoExtension}` | 当前打开文件的基本名称，不包含文件扩展名。 |
+| `${fileDirname}` | 当前打开文件所在的目录路径。 |
+| `${fileExtname}` | 当前打开文件的扩展名。 |
+| `${cwd}` | 启动 VSCode 的工作目录，或者是在 `tasks.json` 中为任务指定的当前工作目录。 |
+| `${lineNumber}` | 当前激活文件中所选定的行号。 |
+| `${selectedText}` | 当前激活文件中所选择的文本。 |
+| `${execPath}` | VSCode 执行文件所在的目录。 |
+| `${defaultBuildTask}` | 默认编译任务（build task）的名字。注意，这个变量可能不直接用于任务配置，但可用于引用默认任务。 |
+| `${env:VARIABLE}` | 访问环境变量，其中 `VARIABLE` 是你想要访问的环境变量的名称。 |
