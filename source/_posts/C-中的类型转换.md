@@ -11,7 +11,7 @@ date: 2024-08-10 22:09:00
 
 | 转换类型         | 描述                                                                 | 用法示例                               |
 |------------------|----------------------------------------------------------------------|----------------------------------------|
-| `static_cast`    | 执行编译时的普通类型转换。用于大多数类型转换，如基本数据类型、指针、引用等。 | `int i = 10; double d = static_cast<double>(i);` |
+| `static_cast`    | 执行编译时的普通类型转换。用于大多数类型转换，如基本数据类型、指针、引用等（转换的数据之间需要有一定的联系，转换在编译时进行检查，如果转换是非法的或者不可能在编译时确定其安全性，编译器将给出错误或警告） | `int i = 10; double d = static_cast<double>(i);` |
 | `dynamic_cast`   | 执行运行时的类型安全转换。用于多态类型（具有虚函数的类）之间的转换。 | `Base* b = new Derived(); Derived* d = dynamic_cast<Derived*>(b);` |
 | `const_cast`     | 添加或去除对象的 `const` 或 `volatile` 限定符。                    | `const int* c = &i; int* p = const_cast<int*>(c);` |
 | `reinterpret_cast` | 执行低级别的位模式转换，通常用于指针类型。                      | `long l = reinterpret_cast<long>(p);` |
