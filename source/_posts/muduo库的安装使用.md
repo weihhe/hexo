@@ -5,7 +5,6 @@ categories:
   - 网络
 date: 2024-09-15 12:47:00
 ---
-
 网络库之一
 <!--more-->
 ## Muduo库 —— 网络通信
@@ -35,6 +34,14 @@ sudo make install
 ## 使用注意
 
 1. 链接时，`-lmuduo_net`也要在` -lmuduo_base`之前链接。
+
+	- 例如`LFLAG = -lmuduo_net -lmuduo_base -pthread`
+    
+		- `-ljsoncpp`：这个选项告诉链接器链接`jsoncpp`库，`jsoncpp`是一个用于处理JSON的C++库。
+    
+		- `-lmuduo_net` 和 `-lmuduo_base`：这两个选项分别告诉链接器链接`muduo_net`和`muduo_base`库。
+    
+		- `-pthread`：这个选项告诉链接器链接POSIX线程库，这是用于多线程编程的库。在Linux下，使用多线程通常需要这个选项。
 
 2. `_baseloop`需要在`_server`的上方声明，因为要使用`_bashloop`来构造`_server`。
 

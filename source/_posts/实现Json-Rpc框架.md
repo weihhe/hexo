@@ -12,7 +12,7 @@ categories:
   - 项目
 date: 2024-09-04 22:09:00
 ---
-搭建Json-Rpc协议框架
+搭建Json-Rpc协议框架 异步操作
 <!--more-->
 
 # 项目设计
@@ -293,4 +293,3 @@ date: 2024-09-04 22:09:00
 	3. 因此，我们使用移动语义来避免复制。通过将`promise`对象移动到另一个作用域（在`thread_function`函数的参数中）或通过使用`std::packaged_task`（它本身是可移动的），我们可以确保`promise`（或`packaged_task`）的所有权被安全地转移到新线程中，同时避免了不必要的资源复制。
   
 	4. 在`std::packaged_task`的示例中，我们通过`std::move(task)`将`packaged_task`对象移动到新线程中。这样，原始`packaged_task`对象在移动后处于有效但未定义的状态（通常是“空”或“已移动”状态），而新线程中的`packaged_task`对象则包含了所有必要的资源来执行封装的任务，并与相应的`future`对象保持通信。
-  

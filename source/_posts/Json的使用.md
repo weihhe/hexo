@@ -212,3 +212,10 @@ static bool unserilize(const std::string &body, Json::Value &val)
 ## 字段宏（`field macros`）
 
 - 提高可维护性：当数据名称发生变化时，只需更新宏定义或相关部分，不必在多个地方修改，从而更容易维护代码。
+
+## 需要注意的点
+
+```cpp
+//其中KEY_HOST_IP是KEY_HOST的子元素，因此要使用二维数组的方式来访问
+_body[KEY_HOST][KEY_HOST_IP].isNull() == true 
+```
