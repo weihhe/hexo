@@ -335,3 +335,335 @@ int main(int argc, char* argv[])
 `FILE *popen(const char *command, const char *mode);`
 
 `popen` 函数用于创建一个进程来执行指定的命令，并建立一个管道，以便在父进程和子进程之间进行通信。它可以用来运行外部命令并读取其输出，或者将数据传递给外部命令进行处理。
+
+
+## 结合Json进行UDP传输（Windows）
+
+准备工作
+
+1. 在 Visual Studio 项目中，确保包含 `winsock2.h` 并链接 `Ws2_32.lib`。
+2. 下载并包含 nlohmann/json 头文件（例如，`json.hpp`）。
+3. 分别创建客户端和服务器端代码文件。
+
+---
+
+### 服务端代码
+
+```cpp
+#include <winsock2.h>
+#include <iostream>
+#include "json.hpp" // 包含 nlohmann/json 头文件
+
+#pragma comment(lib, "Ws2_32.lib")
+
+using json = nlohmann::json;
+
+int main() {
+    // 初始化 Winsock
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+        std::cerr << "WSAStartup failed.\n";
+        return -1;
+    }
+
+    // 创建 UDP 套接字
+    SOCKET serverSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (serverSocket == INVALID_SOCKET) {
+        std::cerr << "Socket creation failed.\n";
+        WSACleanup();
+        return -1;
+    }
+
+    // 绑定地址和端口
+    sockaddr_in serverAddr{};
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(8080);
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+
+    if (bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
+        std::cerr << "Bind failed.\n";
+        closesocket(serverSocket);
+        WSACleanup();
+        return -1;
+    }
+
+    std::cout << "Server is running on port 8080...\n";
+
+    // 接收数据
+    char buffer[512];
+    sockaddr_in clientAddr{};
+    int clientAddrLen = sizeof(clientAddr);
+
+    while (true) {
+        int recvLen = recvfrom(serverSocket, buffer, sizeof(buffer) - 1, 0, (sockaddr*)&clientAddr, &clientAddrLen);
+        if (recvLen == SOCKET_ERROR) {
+            std::cerr << "Receive failed.\n";
+            continue;
+        }
+
+        buffer[recvLen] = '\0';
+        std::cout << "Received: " << buffer << "\n";
+
+        // 解析 JSON 数据
+        try {
+            json receivedJson = json::parse(buffer);
+            std::cout << "Parsed JSON: " << receivedJson.dump(4) << "\n";
+        } catch (json::parse_error& e) {
+            std::cerr << "JSON Parse Error: " << e.what() << "\n";
+        }
+    }
+
+    // 关闭套接字
+    closesocket(serverSocket);
+    WSACleanup();
+    return 0;
+}
+```
+
+---
+
+### 客户端代码
+
+```cpp
+#include <winsock2.h>
+#include <iostream>
+#include "json.hpp" // 包含 nlohmann/json 头文件
+#pragma warning( disable : 4996)
+
+
+#pragma comment(lib, "Ws2_32.lib")
+
+using json = nlohmann::json;
+
+int main() {
+    // 初始化 Winsock
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+        std::cerr << "WSAStartup failed.\n";
+        return -1;
+    }
+
+    // 创建 UDP 套接字
+    SOCKET clientSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (clientSocket == INVALID_SOCKET) {
+        std::cerr << "Socket creation failed.\n";
+        WSACleanup();
+        return -1;
+    }
+
+    // 设置目标地址和端口
+    sockaddr_in serverAddr{};
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(8080);
+    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+    // 构建 JSON 数据
+    json data;
+    data["message"] = "Hello, Server!";
+    data["timestamp"] = time(nullptr);
+
+    std::string jsonString = data.dump();
+    std::cout << "Sending JSON: " << jsonString << "\n";
+
+    // 发送数据
+    if (sendto(clientSocket, jsonString.c_str(), jsonString.size(), 0, (sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
+        std::cerr << "Send failed.\n";
+    }
+
+    // 关闭套接字
+    closesocket(clientSocket);
+    WSACleanup();
+    return 0;
+}
+```
+
+---
+
+### 编译和运行
+
+1. 分别编译服务端和客户端代码。
+2. 启动服务端。
+3. 启动客户端，观察服务端接收并解析 JSON 数据。
+
+### 注意事项
+
+1. 确保防火墙允许 UDP 端口（例如 8080）。
+2. 如果需要跨设备测试，请修改客户端代码中的 IP 地址为服务端的实际 IP。
+
+## Linux环境完成Json进行UDP传输
+
+在 Linux 下完成上述实验，你需要修改代码以使用 Linux 的套接字库。主要区别在于：
+
+1. 替换 `winsock2.h` 和相关函数为标准的 POSIX 套接字库。
+2. 不需要初始化和清理套接字（如 `WSAStartup` 和 `WSACleanup`）。
+3. 使用 GCC 或 G++ 编译代码。
+
+以下是 Linux 下的客户端和服务端代码示例：
+
+---
+
+### 服务端代码
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include "json.hpp" // nlohmann/json 头文件
+
+using json = nlohmann::json;
+
+int main() {
+    // 创建 UDP 套接字
+    int serverSocket = socket(AF_INET, SOCK_DGRAM, 0);
+    if (serverSocket < 0) {
+        perror("Socket creation failed");
+        return -1;
+    }
+
+    // 绑定地址和端口
+    sockaddr_in serverAddr{};
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(8080);
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+
+    if (bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
+        perror("Bind failed");
+        close(serverSocket);
+        return -1;
+    }
+
+    std::cout << "Server is running on port 8080...\n";
+
+    // 接收数据
+    char buffer[512];
+    sockaddr_in clientAddr{};
+    socklen_t clientAddrLen = sizeof(clientAddr);
+
+    while (true) {
+        ssize_t recvLen = recvfrom(serverSocket, buffer, sizeof(buffer) - 1, 0, (sockaddr*)&clientAddr, &clientAddrLen);
+        if (recvLen < 0) {
+            perror("Receive failed");
+            continue;
+        }
+
+        buffer[recvLen] = '\0';
+        std::cout << "Received: " << buffer << "\n";
+
+        // 解析 JSON 数据
+        try {
+            json receivedJson = json::parse(buffer);
+            std::cout << "Parsed JSON: " << receivedJson.dump(4) << "\n";
+        } catch (json::parse_error& e) {
+            std::cerr << "JSON Parse Error: " << e.what() << "\n";
+        }
+    }
+
+    close(serverSocket);
+    return 0;
+}
+```
+
+---
+
+### 客户端代码
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include "json.hpp" // nlohmann/json 头文件
+
+using json = nlohmann::json;
+
+int main() {
+    // 创建 UDP 套接字
+    int clientSocket = socket(AF_INET, SOCK_DGRAM, 0);
+    if (clientSocket < 0) {
+        perror("Socket creation failed");
+        return -1;
+    }
+
+    // 设置目标地址和端口
+    sockaddr_in serverAddr{};
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(8080);
+    if (inet_pton(AF_INET, "127.0.0.1", &serverAddr.sin_addr) <= 0) {
+        perror("Invalid address");
+        close(clientSocket);
+        return -1;
+    }
+
+    // 构建 JSON 数据
+    json data;
+    data["message"] = "Hello, Server!";
+    data["timestamp"] = time(nullptr);
+
+    std::string jsonString = data.dump();
+    std::cout << "Sending JSON: " << jsonString << "\n";
+
+    // 发送数据
+    if (sendto(clientSocket, jsonString.c_str(), jsonString.size(), 0, (sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
+        perror("Send failed");
+    }
+
+    close(clientSocket);
+    return 0;
+}
+```
+
+---
+
+### 编译代码
+
+使用 G++ 编译服务端和客户端代码：
+
+```bash
+g++ -o server server.cpp -std=c++17
+g++ -o client client.cpp -std=c++17
+```
+
+如果 `json.hpp` 文件存放在单独的目录下，可以使用 `-I` 参数指定路径，例如：
+
+```bash
+g++ -o server server.cpp -std=c++17 -I/path/to/json
+g++ -o client client.cpp -std=c++17 -I/path/to/json
+```
+
+---
+
+### 什么是 Header-only 库？
+
+1. **nlohmann/json** 是一个完全由模板实现的库，所有功能都在头文件 `json.hpp` 中实现。
+2. 使用这种库时，不需要预编译生成动态链接库（`*.so`）或静态链接库（`*.a`），只需在代码中 `#include "json.hpp"` 即可。
+3. 因此，在编译时，编译器会直接将 `json.hpp` 的代码编译到目标程序中，而无需额外链接库。
+
+--- 
+
+使用 CJSON 库时，程序只需包含`<cjson/cJsoN.h>`头文件。而在编译时，
+需要添加`-lcjson `选项
+
+---
+
+### 什么情况下需要 `-l` 选项？
+
+`-l` 选项（例如 `-lcjson`）用于链接动态或静态库，通常用于：
+
+1. **预编译的库文件**：例如，`cJSON` 是一个 C 实现的 JSON 处理库，提供的是动态/静态库文件（如 `libcjson.so` 或 `libcjson.a`）。编译时需要显式地告诉编译器链接这个库：
+  
+  ```bash
+  g++ -o program program.cpp -lcjson
+  ```
+  
+2. **操作系统提供的库**：例如，链接数学库时需要 `-lm`。
+  
+
+---
+
+### 如何判断是否需要 `-l`？
+
+
+1. 如果使用的是 header-only 库（如 nlohmann/json），只需 `#include`，无需额外的 `-l` 参数。
+2. 如果库提供了预编译的二进制文件（如 `.so` 或 `.a` 文件），则需要在编译时通过 `-l` 指定。
+3. 查看库的官方文档是最佳实践。对于 nlohmann/json，官方明确说明是 header-only 库，因此无需任何 `-l` 链接操作。
