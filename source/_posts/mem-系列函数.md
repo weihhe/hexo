@@ -7,7 +7,6 @@ categories:
   - ''
 date: 2024-07-05 15:55:00
 ---
-
 以表格的形式整理
 <!-- more -->
 
@@ -27,3 +26,5 @@ date: 2024-07-05 15:55:00
 **使用new开辟数组并销毁**： 
 - int* arr = new int[10];
 - delete[] arr;
+
+**calloc**会
