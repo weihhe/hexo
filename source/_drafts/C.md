@@ -251,8 +251,10 @@ if (customer?.Face() ?? false)
     // 执行操作
 }
 ```
+## 引用（引用类型和值类型）
 
 ## 特性
 
 - **[CallerMemberName]**：这是一个特性，用于自动获取调用方法的名称。如果调用方法没有显式传递参数，则 propertyName 会自动填充为调用方法的名称。
 
+- https://www.cnblogs.com/fengjq/p/17589245.html

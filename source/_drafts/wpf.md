@@ -68,4 +68,5 @@ tags:
 ## 暂时未理解的
 
 - StackPanel
+- AddDllValuefolderCommand = new RelayCommand(() => AddDllValuefolder(selectedInputFolderPath));不可以直接使用AddDllValuefolderCommand = new RelayCommand(AddDllValuefolder(selectedInputFolderPath));
 
