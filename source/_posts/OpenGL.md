@@ -1,9 +1,9 @@
-title: OpenGL
+title: OpenGL基础概念
 author: weihehe
 date: 2025-04-11 15:53:24
 tags:
 ---
-OpenGL学习
+基础概念，如运作，对象
 <!--more-->
 本章全部内容都来自于[LearnOpenGL CN](https://learnopengl-cn.github.io/)
 
@@ -29,6 +29,19 @@ OpenGL学习
 
 - OpenGL库是用C语言写的，同时也支持多种语言的派生，但其内核仍是一个C库。我们将对象绑定至上下文的目标位置，从而实现调用。
 
+```c
+// 创建对象
+unsigned int objectId = 0;
+glGenObject(1, &objectId);
+// 绑定对象至上下文
+glBindObject(GL_WINDOW_TARGET, objectId);
+// 设置当前绑定到 GL_WINDOW_TARGET 的对象的一些选项
+glSetObjectOption(GL_WINDOW_TARGET, GL_OPTION_WINDOW_WIDTH, 800);
+glSetObjectOption(GL_WINDOW_TARGET, GL_OPTION_WINDOW_HEIGHT, 600);
+// 将上下文对象设回默认
+glBindObject(GL_WINDOW_TARGET, 0);
+```
+
 ## GLAD
 
 - 因为`OpenGL`只是一个标准/规范，具体的实现是由驱动开发商针对特定显卡实现的，`OpenGL`驱动版本众多，它大多数函数的位置都无法在编译时确定下来。
@@ -37,10 +50,7 @@ OpenGL学习
 
 **GLAD**用来管理**OpenGL的函数指针**，所以在调用任何OpenGL的函数之前我们需要初始化GLAD。
 
-## 视口
 
-- 在我们开始渲染之前，我们必须告诉OpenGL渲染窗口的尺寸大小，即视口(Viewport)，这样OpenGL才只能知道怎样根据窗口大小显示数据和坐标。
-	- 我们可以通过调用glViewport函数来设置视口的尺寸(Dimension)
 
 ## 双缓冲
 
