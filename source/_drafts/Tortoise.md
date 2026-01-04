@@ -1,4 +1,4 @@
-title: Tortoise
+title: Tortoise的Rebase使用
 author: weihehe
 date: 2025-02-27 11:16:03
 tags:
@@ -92,11 +92,3 @@ tags:
 - **Clean up...**：清理未跟踪文件（如临时文件）。
 
 ---
-
-### **使用场景建议**
-- **日常同步代码**：`Pull` → 修改代码 → `Commit` → `Push`  
-- **处理冲突**：`Pull`发现冲突 → 手动解决 → `Commit` → `Push`  
-- **临时切换任务**：`Stash changes` → 切换分支 → 恢复`Stash`  
-- **回退错误提交**：`Show log`找到提交 → `Revert`或`Reset`
-
-建议先掌握基础操作（Pull/Commit/Push）和版本对比（Diff/Log），再逐步学习分支管理和高级功能。遇到问题时，可通过 `Help` 或在线文档（如 [Git官方文档](https://git-scm.com/doc)）深入学习。
